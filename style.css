@@ -1,6 +1,9 @@
 :root{
     --grid-height: 0;
     --grid-width: 0;
+    --white: #e3ede8;
+    --black: #0f1f17;
+    
 }
 
 main{
@@ -18,13 +21,13 @@ main{
 }
 
 .col{
-    height: 10px;
-    width: 10px;
+    height: 2rem;
+    width: 2rem;
     border: 1px solid black;
-
+    text-align: center;
 }
 
 .bomb{
     background-color: red;
-    
+
 }
