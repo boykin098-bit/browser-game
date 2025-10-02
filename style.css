@@ -3,15 +3,40 @@
     --grid-width: 0;
     --white: #e3ede8;
     --black: #0f1f17;
-    
+    --green-dark: #1f382c;
+
+}
+
+*,
+*::before,
+*::after{
+    box-sizing: border-box;
+}
+html{
+    background-color:var(--green-dark);
+    color: var(--white);
+    background-image: url("images/bg-elem.svg"), url("images/bg-elem.svg");
+    background-size: 88px 128px;
+    background-position: 0 0, 44px 64px;
+}
+
+body{
+    background: linear-gradient(to right,rgba(4, 14, 9, 0.6) 0%, rgba(30, 54, 43, 0.3) 33%, rgba(30, 54, 43, 0.3) 67%, rgba(4, 14, 9, 0.6) 100%);
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+}
+
+h1{
+    margin:0;
+    padding: 2rem;
+    text-align: center;
 }
 
 main{
-    display: grid;
-    grid-template-rows: repeat(var(--grid-height), 1fr);
-    column-gap: 2px;
-    row-gap: 2px;
-    
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
 }
 
 .row{
@@ -30,4 +55,7 @@ main{
 .bomb{
     background-color: red;
 
+}
+.clicked{
+    background-color: gray;
 }

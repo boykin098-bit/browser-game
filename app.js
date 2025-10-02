@@ -1,33 +1,86 @@
 const main = document.querySelector("main")
 const button = document.querySelector("button")
 const cellArray = []
+let tilesClicked = 0
+let boardSize = 0
+
+
+
+const winGame = () => {
+    alert(`You win!`)
+    main.innerHTML = ""
+    main.appendChild(button)
+}
+
+const loseGame = () => {
+    alert(`You lost!`)
+
+    for (let bomb = 0; bomb < cellArray.length; bomb++) {
+        const bombPosition = cellArray[bomb].split(",")
+        const xPos = bombPosition[0]
+        const yPos = bombPosition[1]
+
+        const cells = document.querySelectorAll(".col")
+
+        cells.forEach((cell) => {
+            const cellX = cell.getAttribute("col")
+            const cellY = cell.getAttribute("row")
+            if (cellY == yPos && cellX == xPos) {
+                cell.classList.add("bomb")
+            }
+        });
+    }
+
+    const endButton = document.createElement("button")
+    endButton.innerText = "Clear Board"
+    main.appendChild(endButton)
+    endButton.addEventListener('click', ()=> reset())
+    function reset() {
+        main.innerHTML = ""
+        main.appendChild(button)
+    }
+
+}
 
 const cellClick = (event) => {
-    const xPosition = event.target.getAttribute("col")
-    const yPosition = event.target.getAttribute("row")
+    const xPosition = parseInt(event.target.getAttribute("col"))
+    const yPosition = parseInt(event.target.getAttribute("row"))
+    console.log(typeof xPosition, typeof yPosition)
     console.log(`xPosition ${xPosition}, yPosition ${yPosition}`)
     let bombCount = 0
+    let alive = true
     for (let row = yPosition - 1; row <= yPosition + 1; row++) {
         for (let col = xPosition - 1; col <= xPosition + 1; col++) {
-            console.log(`1.${bombCount}`)
+            console.log(`row: ${row}, col: ${col}, bombCount: ${bombCount}`)
+            // console.log(`1.${bombCount}`)
             if (cellArray.includes(`${row},${col}`)) {
-                console.log(`2.${bombCount}`)
+                // console.log(`2.${bombCount}`)
                 bombCount++;
-                console.log(`3.${bombCount}`)
+                // console.log(`3.${bombCount}`)
                 if (row == yPosition && col == xPosition) {
-                    console.log("Boom")
+                    alive = false;
+                    // console.log("Boom")
                     event.target.classList.add("bomb")
                 } else {
-                    console.log("neighboor")
+                    // console.log("neighboor")
                 }
             }
+
         }
     }
-    console.log(`4.${bombCount}`)
+    // console.log(`4.${bombCount}`)
     event.target.innerText = bombCount
 
+    if (alive === true) {
+        tilesClicked--;
+        event.target.classList.add("clicked")
+    } else {
+        loseGame()
+    }
 
-
+    if (tilesClicked == 0 && alive == true) {
+        winGame()
+    }
     // console.log(event.target)
 }
 
@@ -39,6 +92,8 @@ const generateBoard = (height, width, density) => {
     document.documentElement.style.setProperty('--grid-width', width)
     const cellSize = width * height
     const population = cellSize * (density / 100)
+    boardSize = cellSize
+    tilesClicked = boardSize - population
     // for(let bomb = 0; bomb < population; bomb++){
     //     const randomCell= Math.floor(Math.random()*cellSize)
     // }
@@ -52,7 +107,7 @@ const generateBoard = (height, width, density) => {
 
     }
 
-    console.log(cellArray)
+    // console.log(cellArray)
     main.removeChild(button)
     for (let row = 0; row < height; row++) {
         // console.log(`row: ${row}`)
